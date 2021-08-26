@@ -11,16 +11,174 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        .spanRed {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid text-center">
+        <div class="row mt-5" id="ssbox">
+            <!-- <div class="col sapnRed"><span>這是一串文字</span></div> -->
+            <div class="col bg-success">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                    <path fill-rule="evenodd" d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"></path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill-rule="evenodd" d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm16.28-2.72a.75.75 0 00-1.06-1.06l-5.97 5.97-2.47-2.47a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l6.5-6.5z"></path>
+                </svg>
+            </div>
+        </div>
         <div class="row">
-            <div class="col">這是一串文字</div>
+            <div class="col">
+                <button type="button" class="btn btn-success" id="but_startRun">開始</button>
+            </div>
+        </div>
+        <div id="showBox">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">a</div>
+                <div class="col">b</div>
+                <div class="col">c</div>
+                <div class="col">d</div>
+                <div class="col">e</div>
+                <div class="col">f</div>
+                <div class="col">g</div>
+                <div class="col"></div>
+            </div>
         </div>
     </div>
 </body>
 <script>
+    $(function() {
+        f_initset();
+        // for (let i = 0; i < 10; i++) {
+        //     console.log(f_randomIntervalNum(0, aAry.length));
+        // }
+    });
+    //設定初始值
+    function f_initset() {
+        startRandomNum = f_randomIntervalNum(0, aAry.length - 1);
+        let str = '';
+        // let strColor = '';
+        // $('#ssbox').empty();
+        // for (let i = 0; i < totalBox; i++) {
+        //     strColor = '';
+        //     if (i == startRandomNum) {
+        //         strColor = 'spanRed';
+        //     }
+        //     str += '<div class="col ' + strColor + ' boxX" id="box' + i + '"><span>' + aAry[i] + '</span></div>';
+        // }
+        // $('#ssbox').append(str);
+
+        // str = '';
+        // strColor = '';
+        let numx = 0;
+        let xx = ("0,1,2,3,4,5,6,23,7,22,8,21,9,20,10,19,11,18,17,16,15,14,13,12").split(',');
+        $('#showBox').empty();
+        for (let i = 0; i < 7; i++) {
+            str += '<div class="row">';
+            for (let j = 0; j < 7; j++) {
+                if (i == 0 || i == 6) {
+                    if (j > 0 || j < 6) {
+                        str += '<div class="col boxGroup" id="boxGroup' + xx[numx] + '"><span>' + xx[numx] + '</span></div>';
+                        numx++;
+                    } else {
+                        str += '<div class="col"></div>';
+                    }
+                } else {
+                    if (j == 0 || j == 6) {
+                        str += '<div class="col boxGroup" id="boxGroup' + xx[numx] + '"><span>' + xx[numx] + '</span></div>';
+                        numx++;
+                    } else {
+                        str += '<div class="col"></div>';
+                    }
+                }
+            }
+            str += '</div>';
+        }
+        $('#showBox').append(str);
+        // console.log('#boxGroup' + startRandomNum);
+        // console.log($('.boxGroup'));
+        $('#boxGroup' + startRandomNum).addClass('bg-light');
+    }
+    //初始顯示位置
+    let startRandomNum;
+    $('#but_startRun').on('click', f_startRun);
+    let aAry = ("荔枝,香蕉,榴槤,芒果,西瓜,鳳梨,777,BBB,XXX,SSS,CCC,EEE,GGG,AAA,ERR,QQW").split(',');
+    let totalBox = 24, //總格數
+        runRandomTurnsMin = 5, //增加最少圈
+        runRandomTurnsMax = 7, //增加最多圈
+        runBoxNumber = 0, //跑的格數
+        runCurrentlyBox = 0, //目前的格數
+        runMode = 0, //跑的模式(0=沒執行，1=遞增中，2=持續，3=遞減中)
+        initTime = 0, //初始時間(random 500-1000)
+        initTimeMin = 500,
+        initTimeMax = 1000,
+        runAddMinusTime = 0, //
+        addMinusTime = 0, //遞增遞減時間(random 40-50)
+        addMinusTimeMin = 50,
+        addMinusTimeMax = 80,
+        startRunning; //delay的執行
+    //開始跑
+    function f_startRun() {
+        // for (let i = 0; i < 10; i++) {
+        //     console.log(f_randomIntervalNum(500, 1000));
+        // }
+        if (runMode == 0) {
+            runBoxNumber = totalBox * f_randomIntervalNum(runRandomTurnsMin, runRandomTurnsMax) + f_randomIntervalNum(0, totalBox);
+            runCurrentlyBox = 0;
+            runMode = 1;
+            initTime = f_randomIntervalNum(initTimeMin, initTimeMax);
+            runAddMinusTime = initTime;
+            f_startRunning();
+        }
+    }
+    //執行中
+    function f_startRunning() {
+        startRandomNum = (startRandomNum + 1) % totalBox;
+        addMinusTime = f_randomIntervalNum(addMinusTimeMin, addMinusTimeMax);
+        $('.boxGroup').removeClass('bg-light');
+        $('#boxGroup' + startRandomNum).addClass('bg-light');
+        // console.log(startRandomNum);
+        if (runMode == 1) {
+            if (runAddMinusTime <= addMinusTime || (runAddMinusTime - addMinusTime < 100)) {
+                runAddMinusTime = 100;
+                runMode = 2;
+            } else {
+                runAddMinusTime -= addMinusTime;
+            }
+        } else if (runMode == 2) {
+            runCurrentlyBox++;
+            if (runCurrentlyBox == runBoxNumber) {
+                runMode = 3;
+            }
+        } else if (runMode == 3) {
+            if (runAddMinusTime >= initTime) {
+                runMode = 0;
+            }
+            runAddMinusTime += addMinusTime;
+        }
+        if (runMode != 0) {
+            f_runTime();
+        } else {
+            console.log(startRandomNum);
+        }
+        // console.log('目前模式：' + runMode + '，目前時間：' + runAddMinusTime + '，遞減時間：' + addMinusTime + '，目前數：' + runCurrentlyBox + '，總數值：' + runBoxNumber);
+    }
+    //執行時間
+    function f_runTime() {
+        startRunning = setTimeout(f_startRunning, runAddMinusTime);
+    }
+    //隨機區間數字
+    function f_randomIntervalNum(inStart, inEnd) {
+        let startNum = inStart;
+        let endNum = inEnd - inStart + 1;
+        let returnNum = Math.floor(Math.random() * endNum) + startNum;
+        return returnNum;
+    }
 </script>
 
 </html>
