@@ -15,6 +15,18 @@
         .spanRed {
             color: red;
         }
+        
+        .boxAll {
+            /* max-width: ;
+            min-height: 5em; */
+            padding: 0;
+            margin: 0;
+        }
+        
+        .boxAll img {
+            min-width: inherit;
+            min-height: inherit;
+        }
     </style>
 </head>
 
@@ -36,7 +48,7 @@
                 <button type="button" class="btn btn-success" id="but_startRun">開始</button>
             </div>
         </div>
-        <div id="showBox">
+        <div id="showBox" class="bg-success container-xl">
             <div class="row">
                 <div class="col"></div>
                 <div class="col">a</div>
@@ -58,7 +70,7 @@
         //     console.log(f_randomIntervalNum(0, aAry.length));
         // }
     });
-    //設定初始值
+    //設定初始值，顯現畫面。
     function f_initset() {
         startRandomNum = f_randomIntervalNum(0, aAry.length - 1);
         let str = '';
@@ -75,33 +87,34 @@
 
         // str = '';
         // strColor = '';
-        let numx = 0;
-        let xx = ("0,1,2,3,4,5,6,23,7,22,8,21,9,20,10,19,11,18,17,16,15,14,13,12").split(',');
+        let showNum = 0;
+        let showData = ("0,1,2,3,4,5,6,23,7,22,8,21,9,20,10,19,11,18,17,16,15,14,13,12").split(',');
+        let showImg = ("bell.svg,bell-fill.svg,flame.svg,heart.svg,heart-fill.svg,issue-opened.svg,key.svg,location.svg,bell.svg,bell-fill.svg,flame.svg,heart.svg,heart-fill.svg,issue-opened.svg,key.svg,location.svg,moon.svg,number.svg,pulse.svg,rocket.svg,squirrel.svg,star.svg,star-fill.svg,sun.svg").split(',');
         $('#showBox').empty();
         for (let i = 0; i < 7; i++) {
-            str += '<div class="row">';
+            str += '<div class="row align-items-center"><div class="col"></div>';
             for (let j = 0; j < 7; j++) {
                 if (i == 0 || i == 6) {
                     if (j > 0 || j < 6) {
-                        str += '<div class="col boxGroup" id="boxGroup' + xx[numx] + '"><span>' + xx[numx] + '</span></div>';
-                        numx++;
+                        str += '<div class="col boxAll boxGroup text-center" id="boxGroup' + showData[showNum] + '"><img src="./images/' + showImg[showNum] + '"></img></div>';
+                        showNum++;
                     } else {
-                        str += '<div class="col"></div>';
+                        str += '<div class="col boxAll"></div>';
                     }
                 } else {
                     if (j == 0 || j == 6) {
-                        str += '<div class="col boxGroup" id="boxGroup' + xx[numx] + '"><span>' + xx[numx] + '</span></div>';
-                        numx++;
+                        str += '<div class="col boxAll boxGroup" id="boxGroup' + showData[showNum] + '"><img src="./images/' + showImg[showNum] + '" style=" background: khaki;"></img></div>';
+                        showNum++;
                     } else {
-                        str += '<div class="col"></div>';
+                        str += '<div class="col boxAll"></div>';
                     }
                 }
             }
-            str += '</div>';
+            str += '<div class="col"></div></div>';
         }
         $('#showBox').append(str);
         // console.log('#boxGroup' + startRandomNum);
-        // console.log($('.boxGroup'));
+        console.log($('.boxGroup').width());
         $('#boxGroup' + startRandomNum).addClass('bg-light');
     }
     //初始顯示位置
