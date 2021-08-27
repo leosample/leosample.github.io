@@ -17,15 +17,21 @@
         }
         
         .boxAll {
-            /* max-width: ;
-            min-height: 5em; */
+            max-width: inherit;
+            min-height: inherit;
             padding: 0;
             margin: 0;
         }
         
         .boxAll img {
-            min-width: inherit;
-            min-height: inherit;
+            /* min-width: inherit;
+            min-height: inherit; */
+            max-height: inherit;
+            max-width: inherit;
+            width: inherit;
+            height: inherit;
+            padding: auto;
+            margin: auto;
         }
     </style>
 </head>
@@ -92,7 +98,7 @@
         let showImg = ("bell.svg,bell-fill.svg,flame.svg,heart.svg,heart-fill.svg,issue-opened.svg,key.svg,location.svg,bell.svg,bell-fill.svg,flame.svg,heart.svg,heart-fill.svg,issue-opened.svg,key.svg,location.svg,moon.svg,number.svg,pulse.svg,rocket.svg,squirrel.svg,star.svg,star-fill.svg,sun.svg").split(',');
         $('#showBox').empty();
         for (let i = 0; i < 7; i++) {
-            str += '<div class="row align-items-center"><div class="col"></div>';
+            str += '<div class="row align-items-center">';
             for (let j = 0; j < 7; j++) {
                 if (i == 0 || i == 6) {
                     if (j > 0 || j < 6) {
@@ -103,19 +109,21 @@
                     }
                 } else {
                     if (j == 0 || j == 6) {
-                        str += '<div class="col boxAll boxGroup" id="boxGroup' + showData[showNum] + '"><img src="./images/' + showImg[showNum] + '" style=" background: khaki;"></img></div>';
+                        str += '<div class="col boxAll boxGroup" id="boxGroup' + showData[showNum] + '"><img src="./images/' + showImg[showNum] + '"></img></div>';
                         showNum++;
                     } else {
                         str += '<div class="col boxAll"></div>';
                     }
                 }
             }
-            str += '<div class="col"></div></div>';
+            str += '</div>';
         }
         $('#showBox').append(str);
         // console.log('#boxGroup' + startRandomNum);
         console.log($('.boxGroup').width());
         $('#boxGroup' + startRandomNum).addClass('bg-light');
+        //設定高度=寬度
+        $('#boxAll').height($('#boxAll').width());
     }
     //初始顯示位置
     let startRandomNum;
